@@ -4,7 +4,6 @@ from Video import Video # The custom Video class
 from FaceDetect import FaceDetect # The custom FaceDetect class
 
 def main(argv): # Main function
-    #video = Video("rtsp://admin:hik12345@192.168.1.21/video.h264")
     if(argv[1] == "webcam"):
         video = Video(0, argv[2])
     else:
