@@ -1,11 +1,10 @@
 # ------------------------------------------------------
-# Author : Redwanul Karim
 # Assumptions : Annotation for only face data
 # Annotation Style : YOLO
 # API : Face Plus Plus (https://www.faceplusplus.com/)
 # ------------------------------------------------------
 
-import os
+import os, sys
 import requests
 import cv2, asyncio
 import aiohttp
@@ -25,22 +24,27 @@ class Annotation:
     api_key = None
     secret_key = None
     training_data_path = None
+    annotation_path    = None 
 
-    def __init__(self, api_key, secret_key, object_type, training_data_path):
+    def __init__(self, api_key, secret_key, object_type, 
+                 training_data_path, annotation_path):
         self.api_key    = api_key
         self.secret_key = secret_key
         self.training_data_path = training_data_path
         self.object     = object_type
+        self.annotation_path = annotation_path
 
     async def prepareTrainingData( self ):
-        # This dictionary will contain the requested data config
-        #     
+     
         idx = 0
 
         for img in os.scandir( self.training_data_path ):
             
             file_name       = img.name.split('.')[0] + '.xml'
-            fileToBeChecked = os.path.dirname(os.path.realpath(__file__)) + '/Annotations/' + file_name
+            fileToBeChecked = os.path.dirname(os.path.realpath(__file__)) 
+            fileToBeChecked += '/' + self.annotation_path + '/' + file_name
+
+            print("F --> " + fileToBeCheked)
             
             if os.path.isfile( fileToBeChecked ):
                 continue
@@ -130,27 +134,22 @@ class Annotation:
         with open(save_path, 'wb') as temp_xml:
             temp_xml.write(xml_str)
 
-# If the files are not named in a sorted order
-# you can use this to rename them all
 
-def renameAll( ):
-    path = os.path.dirname(os.path.realpath(__file__)) + '/images'
-    
-    files = ( file for file in os.listdir(path) 
-            if os.path.isfile(os.path.join(path, file)))
- 
-    for i, file in enumerate( files ):
-        f_name = file.split('.')
-        extension = f_name[1]
-        os.rename(path + '/' + file, path + '/' + 'batch-02-{:07}.'.format(i) + extension )
+def main( arguments ):
 
-def main():
-    # renameAll()
-    ann  = Annotation(API_KEY, API_SECRET, 'face', 'images')
+    object_type, dataset_path, annotation_path = arguments[ 1 ], arguments[ 2 ], arguments[ 3 ]
+
+    ann  = Annotation(API_KEY, API_SECRET, object_type, dataset_path, annotation_path)
     loop = asyncio.get_event_loop( )
     loop.run_until_complete(ann.prepareTrainingData( ))
     loop.close( )
 
 if __name__ == '__main__':
-    main( )
+    if(len( sys.argv ) == 4 ):
+        main( sys.argv )
+    else:
+        print("Error:: Please provide object type, dataset location, and annotation destination!\n")
+        print("Command::\n~ python Annotation_with_face++.py object_type dataset_path annotation_path\n")
+
+
 
