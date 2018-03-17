@@ -73,7 +73,7 @@ class Annotation:
                         os.remove( object_details['image_path'] )  # As this image does not contain any face
                         continue
 
-                    await self.generateAnnotation(img, object_details, 'Annotations')
+                    await self.generateAnnotation(img, object_details, self.annotation_path)
                     file.write(str(object_details) + "\n")
                     # dump.write(resp.content)   
                     print("Generated Annotations : ", idx+1)
