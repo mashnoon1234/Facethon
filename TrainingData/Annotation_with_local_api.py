@@ -2,7 +2,7 @@
 # Assumptions : Annotation for only face data
 # Annotation Style : YOLO
 # API : face_recognition  
-# NOTE: It's mendatory to install face_recognition api ( pip3 install face_recognition )
+# NOTE: It's mandatory to install face_recognition api ( pip3 install face_recognition )
 # ------------------------------------------------------
 
 import os, cv2
@@ -94,7 +94,7 @@ class Annotation:
         return location_list
     
     # Ref : https://github.com/markjay4k/YOLO-series/blob/master/part7%20-%20generate_xml.py
-    
+
     def generateAnnotation(self, img, object_details, savedir):
         if not os.path.isdir(savedir):
             os.mkdir(savedir)
