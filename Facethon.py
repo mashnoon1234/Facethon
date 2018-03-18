@@ -5,20 +5,28 @@ from FaceDetect import FaceDetect # The custom FaceDetect class
 
 def main(argv): # Main function
     #video = Video("rtsp://admin:hik12345@192.168.1.21/video.h264")
-    if(argv[1] == "webcam"):
-        video = Video(0, argv[2])
+    
+    weights, gpu = None, 0
+    videoInput, frameWidth, modelName, xmlOrCfg = argv[ 1 ], argv[ 2 ], argv[ 3 ], argv[ 4 ]
+    
+    if modelName == "yolo2":
+        weights, gpu = argv[ 5 ], argv[ 6 ]
+    
+    if( videoInput == "webcam" ):
+        video = Video( 0, frameWidth )            # Video input taken from webcam
     else:
-        video = Video(argv[1], argv[2])
+        video = Video( videoInput, frameWidth )      # Video input taken from IP Camera
     try:
-        faceDetect = FaceDetect(argv[3], argv[4], argv[5], argv[6])
+        faceDetect = FaceDetect( modelName, xmlOrCfg, weights, gpu)
     except:
-        faceDetect = FaceDetect(argv[3], argv[4])
+        faceDetect = FaceDetect( modelName, xmlOrCfg )
+    
     while(True):
         video.startTimer()
-        frame = video.processFrame(video.captureFrame())
-        frame = faceDetect.detect(frame)
-        video.stopTimer()
-        video.showFrame(frame)
+        frame = video.processFrame( video.captureFrame( ) )
+        frame = faceDetect.detect( frame )
+        video.stopTimer( )
+        video.showFrame( frame )
         if(cv2.waitKey(1) & 0xFF == ord("q")):
             break
 

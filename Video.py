@@ -22,6 +22,7 @@ class Video:
     def processFrame(self, frame): # Does resizing, grayscale conversion and more
         frame = cv2.UMat(frame)
         frame = cv2.resize(frame, (self.__frameWidth, self.__frameHeight))
+        frame = frame[:, :, ::-1 ]  # converting BRG to RGB
         return frame
 
     def startTimer(self):
