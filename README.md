@@ -5,7 +5,10 @@ A "state-of-the-art" robust face-recognition system that will recognize the hell
 ```
 python3 Facethon.py [url] [frameWidth] haar haarcascade_frontalface_default.xml
 ```
-
+## Command-line arguments' structure for Lbpcascade:
+```
+python3 Facethon.py [url] [frameWidth] lbp lbpcascade_frontalface.xml
+```
 ## Command-line arguments' structure for Yolo2:
 ```
 python3 Facethon.py [url] [frameWidth] yolo2 [cfg] [weights] [gpu]
