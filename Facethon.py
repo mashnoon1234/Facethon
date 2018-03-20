@@ -2,8 +2,13 @@ import cv2
 import sys # For command-line arguments
 from Video import Video # The custom Video class
 from FaceDetect import FaceDetect # The custom FaceDetect class
+from MachineLearning import MachineLearning
+from FaceRecognize import FaceRecognize
 
 def main(argv): # Main function
+    faceRecognize = FaceRecognize("lbph")
+    learner = MachineLearning("lbph")
+    recognizer, faceNames = learner.trainRecognizer("Faces")
     if(argv[1] == "webcam"):
         video = Video(0, argv[2])
     else:
@@ -15,7 +20,8 @@ def main(argv): # Main function
     while(True):
         video.startTimer()
         frame = video.processFrame(video.captureFrame())
-        frame = faceDetect.detect(frame)
+        frame, detectedFaces = faceDetect.detect(frame)
+        frame = faceRecognize.recognize(frame, detectedFaces, recognizer, faceNames)
         video.stopTimer()
         video.showFrame(frame)
         if(cv2.waitKey(1) & 0xFF == ord("q")):
