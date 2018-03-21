@@ -22,61 +22,31 @@ class MachineLearning: # This class contains training and testing algorithms of 
         pass
     
     def __trainLBPH(self, imageDirectory):
-        self.__recognizer = cv2.face.LBPHFaceRecognizer_create()
+        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 15, 8, 8, 50)
         faces = []
         faceNames = []
         faceIndex = []
-        #imageLabels = os.listdir(imageDirectory)
-            #for eachImageLabel in imageLabels:
-            #if eachImageLabel.startswith("."):
-            #    continue
-        image = cv2.imread("Faces/Mashnoon.jpg")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        detectedFaces = self.__detector.detectMultiScale(image, 1.1, 4)
-        print(type(detectedFaces), detectedFaces) # To test if face is empty or not
-        (x, y, w, h) = detectedFaces[0]
-        face = image[y : y + w, x : x + h]
-        if face is not None:
-            faces.append(face)
-            faceNames.append("Mashnoon")
-            faceIndex.append(0)
-        
-        image = cv2.imread("Faces/Mashnoon_1.jpg")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        detectedFaces = self.__detector.detectMultiScale(image, 1.1, 4)
-        print(type(detectedFaces), detectedFaces) # To test if face is empty or not
-        (x, y, w, h) = detectedFaces[0]
-        face = image[y : y + w, x : x + h]
-        if face is not None:
-            faces.append(face)
-            faceNames.append("Mashnoon")
-            faceIndex.append(1)
-        
-        image = cv2.imread("Faces/MLESIR.jpg")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        detectedFaces = self.__detector.detectMultiScale(image, 1.1, 4)
-        print(type(detectedFaces), detectedFaces) # To test if face is empty or not
-        (x, y, w, h) = detectedFaces[0]
-        face = image[y : y + w, x : x + h]
-        if face is not None:
-            faces.append(face)
-            faceNames.append("Lutfe Elahi Sir")
-            faceIndex.append(2)
-        
-        image = cv2.imread("Faces/MLESIR1.jpg")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        detectedFaces = self.__detector.detectMultiScale(image, 1.1, 4)
-        print(type(detectedFaces), detectedFaces) # To test if face is empty or not
-        (x, y, w, h) = detectedFaces[0]
-        face = image[y : y + w, x : x + h]
-        if face is not None:
-            faces.append(face)
-            faceNames.append("Lutfe Elahi Sir")
-            faceIndex.append(3)
+        imageLabels = os.listdir(imageDirectory)
+        #print(imageLabels)
+        i = 0
+        for eachImageLabel in imageLabels:
+            if eachImageLabel.startswith("."):
+                continue
+            print(eachImageLabel)
+            image = cv2.imread(imageDirectory + "/" + eachImageLabel)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            print(type(detectedFaces), detectedFaces) # To test if face is empty or not
+            (x, y, w, h) = detectedFaces[0]
+            face = image[y : y + w, x : x + h]
+            if face is not None:
+                faces.append(face)
+                faceNames.append(eachImageLabel)
+                faceIndex.append(i)
+                i += 1
         
         self.__recognizer.train(faces, numpy.array(faceIndex))
         return self.__recognizer, faceNames
-
 
     def __trainYolo2(self): # Trains Yolo2s
         pass

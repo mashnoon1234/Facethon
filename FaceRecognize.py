@@ -11,8 +11,10 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
 
     def __recognizeLbph(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
-            face = frame[y : y + w, x : x + h]
+            #face = frame[y : y + w, x : x + h]
+            face = cv2.UMat(frame, [y, y + w], [x, x + h])
             faceIndex, confidence = recognizer.predict(face)
-            if(confidence < 60):
+            print(confidence)
+            if(faceIndex != -1):
                 cv2.putText(frame, faceNames[faceIndex], (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), 2)
         return frame 

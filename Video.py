@@ -20,7 +20,7 @@ class Video:
         return self.__video.read()
 
     def processFrame(self, frame): # Does resizing, grayscale conversion and more
-        #frame = cv2.UMat(frame)
+        frame = cv2.UMat(frame)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         frame = cv2.resize(frame, (self.__frameWidth, self.__frameHeight))
         return frame

@@ -8,7 +8,7 @@ from FaceRecognize import FaceRecognize
 def main(argv): # Main function
     faceRecognize = FaceRecognize("lbph")
     learner = MachineLearning("lbph")
-    recognizer, faceNames = learner.trainRecognizer("Faces")
+    recognizer, faceNames = learner.trainRecognizer("Faces/")
     if(argv[1] == "webcam"):
         video = Video(0, argv[2])
     else:
