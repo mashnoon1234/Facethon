@@ -11,6 +11,10 @@ class MachineLearning: # This class contains training and testing algorithms of 
     def trainRecognizer(self, imageDirectory):
         if(self.__name == "lbph"):
             return self.__trainLBPH(imageDirectory)
+        elif(self.__name == "fisher"):
+            return self.__trainFisher(imageDirectory)
+        elif(self.__name == "eigen"):
+            return self.__trainEigen(imageDirectory)
 
     def trainDetector(self):
         pass
@@ -44,7 +48,58 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 faceNames.append(eachImageLabel)
                 faceIndex.append(i)
                 i += 1
-        
+        self.__recognizer.train(faces, numpy.array(faceIndex))
+        return self.__recognizer, faceNames
+
+    def __trainFisher(self, imageDirectory):
+        self.__recognizer = cv2.face.FisherFaceRecognizer_create(0, 50)
+        faces = []
+        faceNames = []
+        faceIndex = []
+        imageLabels = os.listdir(imageDirectory)
+        #print(imageLabels)
+        i = 0
+        for eachImageLabel in imageLabels:
+            if eachImageLabel.startswith("."):
+                continue
+            print(eachImageLabel)
+            image = cv2.imread(imageDirectory + "/" + eachImageLabel)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            print(type(detectedFaces), detectedFaces) # To test if face is empty or not
+            (x, y, w, h) = detectedFaces[0]
+            face = image[y : y + w, x : x + h]
+            if face is not None:
+                faces.append(face)
+                faceNames.append(eachImageLabel)
+                faceIndex.append(i)
+                i += 1
+        self.__recognizer.train(faces, numpy.array(faceIndex))
+        return self.__recognizer, faceNames
+
+    def __trainEigen(self, imageDirectory):
+        self.__recognizer = cv2.face.EigenFaceRecognizer_create(0, 50)
+        faces = []
+        faceNames = []
+        faceIndex = []
+        imageLabels = os.listdir(imageDirectory)
+        #print(imageLabels)
+        i = 0
+        for eachImageLabel in imageLabels:
+            if eachImageLabel.startswith("."):
+                continue
+            print(eachImageLabel)
+            image = cv2.imread(imageDirectory + "/" + eachImageLabel)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            print(type(detectedFaces), detectedFaces) # To test if face is empty or not
+            (x, y, w, h) = detectedFaces[0]
+            face = image[y : y + w, x : x + h]
+            if face is not None:
+                faces.append(face)
+                faceNames.append(eachImageLabel)
+                faceIndex.append(i)
+                i += 1
         self.__recognizer.train(faces, numpy.array(faceIndex))
         return self.__recognizer, faceNames
 
