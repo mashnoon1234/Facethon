@@ -14,10 +14,10 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
             self.__weights = weights
             self.__gpu     = gpu 
             options        = {
-                'model': self.__cfg,
-                'load': self.__weights,
+                'model': str(self.__cfg),
+                'load': '/home/redwan/Projects/Facethon/Yolov2/bin/yolo-face.weights', #str(self.__weights),
                 'threshold': 0.3,
-                'gpu': self.__gpu
+                'gpu': float(self.__gpu)
             }
             self.__tfnet         = TFNet( options )
             self.__faceRecognize = FaceRecognize( "svm" )

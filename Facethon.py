@@ -13,7 +13,7 @@ def main(argv): # Main function
         weights, gpu = argv[ 5 ], argv[ 6 ]
     
     if( videoInput == "webcam" ):
-        video = Video( 0, frameWidth )            # Video input taken from webcam
+        video = Video( 0, frameWidth )               # Video input taken from webcam
     else:
         video = Video( videoInput, frameWidth )      # Video input taken from IP Camera
     try:
@@ -21,9 +21,14 @@ def main(argv): # Main function
     except:
         faceDetect = FaceDetect( modelName, xmlOrCfg )
     
+    # capture = cv2.VideoCapture(0)
+    # capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    # capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
     while(True):
         video.startTimer()
         frame = video.processFrame( video.captureFrame( ) )
+        # ret, frame   = capture.read()
         frame = faceDetect.detect( frame )
         video.stopTimer( )
         video.showFrame( frame )

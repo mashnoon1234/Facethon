@@ -7,11 +7,12 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
         self.__modelName = modelName
         if self.__modelName == "svm":
             self.__face_database = {
-                'face_name' : [],
+                'face_names' : [],
                 'face_encodings': []
             }
             self.__processExistingFaceDatabase( )
             self.__colors = [ tuple(255 * np.random.rand(3)) for _ in range(10) ]
+            # print("COlORS ___ ++ " + str(self.__colors) )
 
 
     # This function generated landmarks for existing faces from face_database
@@ -35,21 +36,22 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
                 match_index = matches.index(True)
                 name        = self.__face_database['face_names'][ match_index ]
             face_names.append( name )
-            return face_names
+            
+        return face_names
 
 
     # This is the recognition function which uses SVM classifier.
     def __recognizeWithSVM( self, frame, prectictedFaceLocations ):
         predictedFaceEncodings = face_recognition.face_encodings( frame, prectictedFaceLocations )
         face_names             = self.__getPredictedNames( predictedFaceEncodings )
-        
+
         for color, result, name in zip( self.__colors, prectictedFaceLocations, face_names ):
             tl = ( result[ 3 ], result[ 0 ] )
             br = ( result[ 1 ], result[ 2 ] )
 
             frame = cv2.rectangle( frame, tl, br, color, 6 )
             frame = cv2.putText(
-                frame, name, tl, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 2) )
+                frame, name, tl, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 2)
 
         return frame
 
