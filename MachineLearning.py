@@ -26,7 +26,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
         pass
     
     def __trainLBPH(self, imageDirectory):
-        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 15, 8, 8, 50)
+        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 8, 8, 8, 55)
         faces = []
         faceNames = []
         faceIndex = []
@@ -38,16 +38,22 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 continue
             print(eachImageLabel)
             image = cv2.imread(imageDirectory + "/" + eachImageLabel)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            #image = cv2.UMat(image)
+            #image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 8)
             print(type(detectedFaces), detectedFaces) # To test if face is empty or not
             (x, y, w, h) = detectedFaces[0]
             face = image[y : y + w, x : x + h]
+            #face = cv2.UMat(image, [y, y + w], [x, x + h])
             if face is not None:
+                face = cv2.resize(face, (500, 500))
+                face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+                #cv2.equalizeHist(face, face)
                 faces.append(face)
                 faceNames.append(eachImageLabel)
                 faceIndex.append(i)
                 i += 1
+    #cv2.imshow(eachImageLabel,face)
         self.__recognizer.train(faces, numpy.array(faceIndex))
         return self.__recognizer, faceNames
 
@@ -65,7 +71,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
             print(eachImageLabel)
             image = cv2.imread(imageDirectory + "/" + eachImageLabel)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 8)
             print(type(detectedFaces), detectedFaces) # To test if face is empty or not
             (x, y, w, h) = detectedFaces[0]
             face = image[y : y + w, x : x + h]
@@ -91,7 +97,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
             print(eachImageLabel)
             image = cv2.imread(imageDirectory + "/" + eachImageLabel)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 6)
+            detectedFaces = self.__detector.detectMultiScale(image, 1.1, 8)
             print(type(detectedFaces), detectedFaces) # To test if face is empty or not
             (x, y, w, h) = detectedFaces[0]
             face = image[y : y + w, x : x + h]

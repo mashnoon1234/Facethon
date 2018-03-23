@@ -21,7 +21,7 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
             return self.__detectYolo2()
 
     def __detectHaarcascade(self, frame): # Haarcascade Face Detection
-        detectedFaces = self.__cascade.detectMultiScale(frame, 1.4, 6) # Receives detected faces as an object
+        detectedFaces = self.__cascade.detectMultiScale(frame, 1.8, 12) # Receives detected faces as an object
         for (x, y, w, h) in detectedFaces: # Iterates through the detected faces
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2) # Draws rectangles around detected faces
         return frame, detectedFaces
