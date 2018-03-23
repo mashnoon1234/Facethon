@@ -26,7 +26,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
         pass
     
     def __trainLBPH(self, imageDirectory):
-        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 8, 8, 8, 55)
+        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 8, 8, 8, 65)
         faces = []
         faceNames = []
         faceIndex = []
@@ -46,9 +46,9 @@ class MachineLearning: # This class contains training and testing algorithms of 
             face = image[y : y + w, x : x + h]
             #face = cv2.UMat(image, [y, y + w], [x, x + h])
             if face is not None:
-                face = cv2.resize(face, (500, 500))
+                face = cv2.resize(face, (800, 800))
                 face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-                #cv2.equalizeHist(face, face)
+                cv2.equalizeHist(face, face)
                 faces.append(face)
                 faceNames.append(eachImageLabel)
                 faceIndex.append(i)

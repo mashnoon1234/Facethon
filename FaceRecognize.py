@@ -17,9 +17,9 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
         for (x, y, w, h) in detectedFaces:
             #face = frame[y : y + w, x : x + h]
             face = cv2.UMat(frame, [y, y + w], [x, x + h])
-            #face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-            #face = cv2.resize(face, (500, 500))
-            #cv2.equalizeHist(face, face)
+            face = cv2.resize(face, (800, 800))
+            face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+            cv2.equalizeHist(face, face)
             faceIndex, confidence = recognizer.predict(face)
             print(faceIndex)
             print(confidence)
