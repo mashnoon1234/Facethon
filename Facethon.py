@@ -6,7 +6,7 @@ from FaceDetect import FaceDetect # The custom FaceDetect class
 def main(argv): # Main function
     #video = Video("rtsp://admin:hik12345@192.168.1.21/video.h264")
     
-    weights, gpu = None, 0
+    #weights, gpu = None, 0
     videoInput, frameWidth, modelName, xmlOrCfg = argv[ 1 ], argv[ 2 ], argv[ 3 ], argv[ 4 ]
     
     if modelName == "yolo2":
