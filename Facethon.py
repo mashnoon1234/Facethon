@@ -6,22 +6,23 @@ from MachineLearning import MachineLearning
 from FaceRecognize import FaceRecognize
 
 def main(argv): # Main function
-    faceRecognize = FaceRecognize("fisher")
-    learner = MachineLearning("fisher")
-    recognizer, faceNames = learner.trainRecognizer("Faces/")
+    try:
+        detector = FaceDetect(argv[3], argv[4], argv[5], argv[6])
+    except:
+        detector = FaceDetect(argv[3], argv[4])
+    trainer = MachineLearning("fisher", detector)
+    recognizer = FaceRecognize("fisher")
+    trainedRecognizer, faceNames = trainer.trainRecognizer("Faces/")
     if(argv[1] == "webcam"):
         video = Video(0, argv[2])
     else:
         video = Video(argv[1], argv[2])
-    try:
-        faceDetect = FaceDetect(argv[3], argv[4], argv[5], argv[6])
-    except:
-        faceDetect = FaceDetect(argv[3], argv[4])
     while(True):
         video.startTimer()
-        frame = video.processFrame(video.captureFrame())
-        frame, detectedFaces = faceDetect.detect(frame)
-        frame = faceRecognize.recognize(frame, detectedFaces, recognizer, faceNames)
+        frame = video.captureFrame()
+        frame = video.processFrame(frame)
+        frame, detectedFaces = detector.detect(frame, "realtime")
+        frame = recognizer.recognize(frame, detectedFaces, trainedRecognizer, faceNames)
         video.stopTimer()
         video.showFrame(frame)
         if(cv2.waitKey(1) & 0xFF == ord("q")):
