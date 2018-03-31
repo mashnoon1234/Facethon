@@ -4,7 +4,7 @@ import numpy
 class FaceRecognize: # This class contains all recognition algorithms encapsulated in functions
     def __init__(self, name): # Constructor / Initializer
         self.__name = name
-        self.__lightCorrection = cv2.createCLAHE(60, (3, 3))
+        self.__lightCorrection = cv2.createCLAHE(60, (8, 8))
 
     def recognize(self, frame, detectedFaces, recognizer, faceNames): # This function reads the command-line arguments and decides which algorithm to use
         if(self.__name == "lbph"):
@@ -17,14 +17,14 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
     def __recognizeLbph(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
             face = cv2.UMat(frame, [y, y + w], [x, x + h])
-            face = cv2.resize(face, (800, 800))
+            face = cv2.resize(face, (400, 400))
             #b, g, r = cv2.split(face)
             #self.__lightCorrection.apply(b, b)
             #self.__lightCorrection.apply(g, g)
             #self.__lightCorrection.apply(r, r)
             #face = cv2.merge((b, g, r))
             face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-            #self.__lightCorrection.apply(face, face)
+            self.__lightCorrection.apply(face, face)
             #face = cv2.GaussianBlur(face, (3, 3), 0)
             #cv2.equalizeHist(face, face)
             faceIndex, confidence = recognizer.predict(face)
@@ -36,14 +36,14 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
     def __recognizeFisher(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
             face = cv2.UMat(frame, [y, y + w], [x, x + h])
-            face = cv2.resize(face, (800, 800))
+            face = cv2.resize(face, (400, 400))
             #b, g, r = cv2.split(face)
             #self.__lightCorrection.apply(b, b)
             #self.__lightCorrection.apply(g, g)
             #self.__lightCorrection.apply(r, r)
             #face = cv2.merge((b, g, r))
-            face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-            #self.__lightCorrection.apply(face, face)
+            #face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+            self.__lightCorrection.apply(face, face)
             #face = cv2.GaussianBlur(face, (3, 3), 0)
             #cv2.equalizeHist(face, face)
             faceIndex, confidence = recognizer.predict(face)
@@ -55,14 +55,14 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
     def __recognizeEigen(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
             face = cv2.UMat(frame, [y, y + w], [x, x + h])
-            face = cv2.resize(face, (800, 800))
+            face = cv2.resize(face, (400, 400))
             #b, g, r = cv2.split(face)
             #self.__lightCorrection.apply(b, b)
             #self.__lightCorrection.apply(g, g)
             #self.__lightCorrection.apply(r, r)
             #face = cv2.merge((b, g, r))
             face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-            #self.__lightCorrection.apply(face, face)
+            self.__lightCorrection.apply(face, face)
             #face = cv2.GaussianBlur(face, (3, 3), 0)
             #cv2.equalizeHist(face, face)
             faceIndex, confidence = recognizer.predict(face)

@@ -11,7 +11,7 @@ class Video:
         self.__frameHeight = int((1.0 / aspectRatio) * self.__frameWidth)
         self.__startTime = 0.0
         self.__endTime = 0.0
-    #self.__lightCorrection = cv2.createCLAHE(60, (3, 3))
+        self.__lightCorrection = cv2.createCLAHE(60, (8, 8))
 
     def __del__(self): # Destructor
         self.__video.stop()
@@ -42,8 +42,8 @@ class Video:
         #self.__lightCorrection.apply(r, r)
         #frame = cv2.merge((b, g, r))
         #frame = self.__transferFrameGPU(frame)
-        #frame = self.__convertFrameToGrayscale(frame)
-        #self.__lightCorrection.apply(frame, frame)
+        frame = self.__convertFrameToGrayscale(frame)
+        self.__lightCorrection.apply(frame, frame)
         #frame = cv2.GaussianBlur(frame, (3, 3), 0)
         return frame
 

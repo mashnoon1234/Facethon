@@ -22,9 +22,9 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
 
     def __detectHaarcascade(self, frame, mode): # Haarcascade Face Detection
         if(mode == "realtime"):
-            detectedFaces = self.__cascade.detectMultiScale(frame, 1.3, 6) # Receives detected faces as an object
+            detectedFaces = self.__cascade.detectMultiScale(frame, 1.3, 8) # Receives detected faces as an object
         elif(mode == "image"):
-            detectedFaces = self.__cascade.detectMultiScale(frame, 1.1, 6) # Receives detected faces as an object
+            detectedFaces = self.__cascade.detectMultiScale(frame, 1.1, 8) # Receives detected faces as an object
         for (x, y, w, h) in detectedFaces: # Iterates through the detected faces
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 4) # Draws rectangles around detected faces
         return frame, detectedFaces

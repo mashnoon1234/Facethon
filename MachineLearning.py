@@ -6,7 +6,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
     def __init__(self, name, detector): # Constructor / Initializer
         self.__name = name
         self.__detector = detector
-        self.__lightCorrection = cv2.createCLAHE(60, (3, 3))
+        self.__lightCorrection = cv2.createCLAHE(60, (8, 8))
     
     def trainRecognizer(self, imageDirectory):
         if(self.__name == "lbph"):
@@ -47,7 +47,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 (x, y, w, h) = detectedFaces[0]
                 face = image[y : y + w, x : x + h]
                 if face is not None:
-                    face = cv2.resize(face, (800, 800))
+                    face = cv2.resize(face, (400, 400))
                     #b, g, r = cv2.split(face)
                     #self.__lightCorrection.apply(b, b)
                     #self.__lightCorrection.apply(g, g)
@@ -85,7 +85,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 (x, y, w, h) = detectedFaces[0]
                 face = image[y : y + w, x : x + h]
                 if face is not None:
-                    face = cv2.resize(face, (800, 800))
+                    face = cv2.resize(face, (400, 400))
                     #b, g, r = cv2.split(face)
                     #self.__lightCorrection.apply(b, b)
                     #self.__lightCorrection.apply(g, g)
@@ -124,7 +124,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 (x, y, w, h) = detectedFaces[0]
                 face = image[y : y + w, x : x + h]
                 if face is not None:
-                    face = cv2.resize(face, (800, 800))
+                    face = cv2.resize(face, (400, 400))
                     #b, g, r = cv2.split(face)
                     #self.__lightCorrection.apply(b, b)
                     #self.__lightCorrection.apply(g, g)
