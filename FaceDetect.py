@@ -5,17 +5,25 @@ from Yolov2.darkflow.net.build import TFNet
 
 
 class FaceDetect: # This class contains all detection algorithms encapsulated in functions
+<<<<<<< HEAD
     def __init__(self, name, xmlOrCfg, weights = "", gpu = 0): # Constructor / Initializer
+=======
+    def __init__(self, name, xmlOrCfg, weights = None, gpu = 0.0): # Constructor / Initializer
+>>>>>>> b9ddca4de8fa1fc5b684c38443e2cdd821cc6365
         self.__name = name
         if(self.__name == "haar"):
             self.__cascade = cv2.CascadeClassifier(xmlOrCfg)
         elif(self.__name == "yolo2"):
             self.__cfg     = xmlOrCfg
             self.__weights = weights
-            self.__gpu     = gpu 
+            self.__gpu     = float(gpu) 
             options        = {
                 'model': str(self.__cfg),
+<<<<<<< HEAD
                 'load' : str(self.__weights),
+=======
+                'load': str(self.__weights), #str(self.__weights),
+>>>>>>> b9ddca4de8fa1fc5b684c38443e2cdd821cc6365
                 'threshold': 0.3,
                 'gpu': self.__gpu
             }
@@ -45,7 +53,8 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
         return locations
 
     def __detectYolo2(self, frame): # Yolo2 Face Detection
-        result          = self.__tfnet.return_predict( frame )
+        frame = cv2.UMat.get(frame)
+        result          = self.__tfnet.return_predict( frame ) # Issue here for some reason!
         face_locations  = self.__predicted_face_locations( result )
         frame           = self.__faceRecognize.recognize( frame, face_locations )
         return frame

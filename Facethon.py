@@ -7,15 +7,13 @@ from pprint import pprint
  
 def main( config ): # Main function
     #video = Video("rtsp://admin:hik12345@192.168.1.21/video.h264")
-    pprint(config)
+    #pprint(config)
     weights, gpu = "", 0
     xmlOrCfg     = ""
     videoInput   = config["Video"]["input"]
     frameWidth   = int( config["Video"]["frame_width"] )
     modelName    = config["Detection"]["Algorithm"]
     
-    capture      = None
-
     if modelName == "yolo2":
         gpu      = float( config["Detection"]["yolo2"]["gpu"] )
         xmlOrCfg = config["Detection"]["yolo2"]["model_path"]
