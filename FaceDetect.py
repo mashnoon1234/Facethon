@@ -1,4 +1,8 @@
 import cv2
+import numpy as np
+from FaceRecognize import FaceRecognize
+from Yolov2.darkflow.net.build import TFNet
+
 
 class FaceDetect: # This class contains all detection algorithms encapsulated in functions
     def __init__(self, name, xmlOrCfg, weights = None, gpu = None): # Constructor / Initializer
@@ -8,9 +12,17 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
         elif(self.__name == "lbp"):
             self.__cascade = cv2.CascadeClassifier(xmlOrCfg)
         elif(self.__name == "yolo2"):
-            self.__cfg = xmlOrCfg
+            self.__cfg     = xmlOrCfg
             self.__weights = weights
-            self.__gpu = gpu 
+            self.__gpu     = gpu 
+            options        = {
+                'model': self.__cfg,
+                'load': self.__weights,
+                'threshold': 0.3,
+                'gpu': self.__gpu
+            }
+            self.__tfnet         = TFNet( options )
+            self.__faceRecognize = FaceRecognize( "svm" )
 
     def detect(self, frame, mode): # This function reads the command-line arguments and decides which algorithm to use
         if(self.__name == "haar"):
@@ -18,7 +30,7 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
         elif(self.__name == "lbp"):
             return self.__detectLbpcascade(frame, mode)
         elif(self.__name == "yolo2"):
-            return self.__detectYolo2()
+            return self.__detectYolo2( frame )
 
     def __detectHaarcascade(self, frame, mode): # Haarcascade Face Detection
         if(mode == "realtime"):
@@ -38,5 +50,17 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 4) # Draws rectangles around detected faces
         return frame, detectedFaces
 
-    def __detectYolo2(self): # Yolo2 Face Detection
-        pass
+    def __predicted_face_locations( self, results ):
+        locations = []
+        for result in results:
+            curr_face = ( result['topleft']['y'], result['bottomright']['x'], 
+                          result['bottomright']['y'], result['topleft']['x'] )
+            locations.append( curr_face )
+
+        return locations
+
+    def __detectYolo2(self, frame): # Yolo2 Face Detection
+        result          = self.__tfnet.return_predict( frame )
+        face_locations  = self.__predicted_face_locations( result )
+        frame           = self.__faceRecognize.recognize( frame, face_locations )
+        return frame
