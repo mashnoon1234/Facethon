@@ -10,7 +10,7 @@ def main(argv): # Main function
         detector = FaceDetect(argv[3], argv[4], argv[5], argv[6])
     except:
         detector = FaceDetect(argv[3], argv[4])
-    trainer = MachineLearning("fisher", detector)
+    trainer = MachineLearning("fisher" detector)
     recognizer = FaceRecognize("fisher")
     trainedRecognizer, faceNames = trainer.trainRecognizer("Faces/")
     if(argv[1] == "webcam"):

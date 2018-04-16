@@ -6,7 +6,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
     def __init__(self, name, detector): # Constructor / Initializer
         self.__name = name
         self.__detector = detector
-        self.__lightCorrection = cv2.createCLAHE(60, (8, 8))
+        self.__lightCorrection = cv2.createCLAHE(80, (4, 4))
     
     def trainRecognizer(self, imageDirectory):
         if(self.__name == "lbph"):
@@ -26,7 +26,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
         pass
     
     def __trainLBPH(self, imageDirectory):
-        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(1, 8, 8, 8)
+        self.__recognizer = cv2.face.LBPHFaceRecognizer_create(radius = 1, neighbours = 4, grid_x = 8, grid_y = 8, threshold = 2000) #dummy value of threshold
         faces = []
         faceNames = []
         faceIndex = []
@@ -47,16 +47,9 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 (x, y, w, h) = detectedFaces[0]
                 face = image[y : y + w, x : x + h]
                 if face is not None:
-                    face = cv2.resize(face, (400, 400))
-                    #b, g, r = cv2.split(face)
-                    #self.__lightCorrection.apply(b, b)
-                    #self.__lightCorrection.apply(g, g)
-                    #self.__lightCorrection.apply(r, r)
-                    #face = cv2.merge((b, g, r))
+                    face = cv2.resize(face, (20, 20))
                     face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
                     self.__lightCorrection.apply(face, face)
-                    #cv2.equalizeHist(face, face)
-                    #face = cv2.GaussianBlur(face, (3, 3), 0)
                     faces.append(face)
                     faceIndex.append(i)
             i += 1
@@ -64,7 +57,7 @@ class MachineLearning: # This class contains training and testing algorithms of 
         return self.__recognizer, faceNames
 
     def __trainFisher(self, imageDirectory):
-        self.__recognizer = cv2.face.FisherFaceRecognizer_create()
+        self.__recognizer = cv2.face.FisherFaceRecognizer_create(num_components = 0, threshold = 500)
         faces = []
         faceNames = []
         faceIndex = []
@@ -86,24 +79,17 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 face = image[y : y + w, x : x + h]
                 if face is not None:
                     face = cv2.resize(face, (400, 400))
-                    #b, g, r = cv2.split(face)
-                    #self.__lightCorrection.apply(b, b)
-                    #self.__lightCorrection.apply(g, g)
-                    #self.__lightCorrection.apply(r, r)
-                    #face = cv2.merge((b, g, r))
                     face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
                     self.__lightCorrection.apply(face, face)
-                    #cv2.equalizeHist(face, face)
-                    #face = cv2.GaussianBlur(face, (3, 3), 0)
                     faces.append(face)
                     faceIndex.append(i)
-                    #cv2.imshow(eachImageLabel, face)
+                    cv2.imshow(eachImageLabel, face)
             i += 1
         self.__recognizer.train(faces, numpy.array(faceIndex))
         return self.__recognizer, faceNames
 
     def __trainEigen(self, imageDirectory):
-        self.__recognizer = cv2.face.EigenFaceRecognizer_create()
+        self.__recognizer = cv2.face.EigenFaceRecognizer_create(num_components = 0, threshold = 1400)
         faces = []
         faceNames = []
         faceIndex = []
@@ -124,16 +110,9 @@ class MachineLearning: # This class contains training and testing algorithms of 
                 (x, y, w, h) = detectedFaces[0]
                 face = image[y : y + w, x : x + h]
                 if face is not None:
-                    face = cv2.resize(face, (400, 400))
-                    #b, g, r = cv2.split(face)
-                    #self.__lightCorrection.apply(b, b)
-                    #self.__lightCorrection.apply(g, g)
-                    #self.__lightCorrection.apply(r, r)
-                    #face = cv2.merge((b, g, r))
+                    face = cv2.resize(face, (20, 20))
                     face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
                     self.__lightCorrection.apply(face, face)
-                    #cv2.equalizeHist(face, face)
-                    #face = cv2.GaussianBlur(face, (3, 3), 0)
                     faces.append(face)
                     faceIndex.append(i)
             i += 1
