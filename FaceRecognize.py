@@ -20,8 +20,9 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
         for img in os.scandir('face_database'):                                 # For now assuming 'face_database' is the folder for existing faces.
             image               = face_recognition.load_image_file(img.path)    # later we will take it from command line argument
             image_face_encoding = face_recognition.face_encodings(image)[0]
-            imgae_name          = img.name.split('.')[0]
-            self.__face_database[ 'face_names' ].append( imgae_name )
+            image_name          = img.name.split('.')[0]
+            image_name          = image_name.split('_')[0]
+            self.__face_database[ 'face_names' ].append( image_name )
             self.__face_database[ 'face_encodings' ].append( image_face_encoding )
             
     

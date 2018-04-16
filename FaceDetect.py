@@ -5,7 +5,7 @@ from Yolov2.darkflow.net.build import TFNet
 
 
 class FaceDetect: # This class contains all detection algorithms encapsulated in functions
-    def __init__(self, name, xmlOrCfg, weights = None, gpu = None): # Constructor / Initializer
+    def __init__(self, name, xmlOrCfg, weights = "", gpu = 0): # Constructor / Initializer
         self.__name = name
         if(self.__name == "haar"):
             self.__cascade = cv2.CascadeClassifier(xmlOrCfg)
@@ -15,10 +15,11 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
             self.__gpu     = gpu 
             options        = {
                 'model': str(self.__cfg),
-                'load': '/home/redwan/Projects/Facethon/Yolov2/bin/yolo-face.weights', #str(self.__weights),
+                'load' : str(self.__weights),
                 'threshold': 0.3,
-                'gpu': float(self.__gpu)
+                'gpu': self.__gpu
             }
+            print("Options ----> " + str(options))
             self.__tfnet         = TFNet( options )
             self.__faceRecognize = FaceRecognize( "svm" )
 
