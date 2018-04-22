@@ -1,6 +1,7 @@
-<<<<<<< HEAD
-import cv2
-import numpy
+import os, cv2
+import face_recognition
+import numpy as np
+import time
 
 class FaceRecognize: # This class contains all recognition algorithms encapsulated in functions
     def __init__(self, name): # Constructor / Initializer
@@ -14,6 +15,16 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
             return self.__recognizeFisher(frame, detectedFaces, recognizer, faceNames)
         elif(self.__name == "eigen"):
             return self.__recognizeEigen(frame, detectedFaces, recognizer, faceNames)
+                self.__modelName = modelName
+        elif self.__name == "svm":
+            self.__face_database = {
+                'face_name' : [],
+                'face_encodings': []
+            }
+            self.__processExistingFaceDatabase( )
+            self.__colors = [ tuple(255 * np.random.rand(3)) for _ in range(10) ]
+            frame = self.__recognizeWithSVM( frame, detectedFaces )
+            return frame
 
     def __recognizeLbph(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
@@ -27,6 +38,7 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
                 cv2.putText(frame, faceNames[faceIndex], (x, y - 8), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 0), thickness = 2, lineType=cv2.LINE_AA)
                 cv2.putText(frame, faceNames[faceIndex], (x, y - 8), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), lineType=cv2.LINE_AA)
         return frame
+    
     def __recognizeFisher(self, frame, detectedFaces, recognizer, faceNames):
         for (x, y, w, h) in detectedFaces:
             face = cv2.UMat(frame, [y, y + w], [x, x + h])
@@ -52,22 +64,6 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
                 cv2.putText(frame, faceNames[faceIndex], (x, y - 8), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 0), thickness = 2, lineType=cv2.LINE_AA)
                 cv2.putText(frame, faceNames[faceIndex], (x, y - 8), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), lineType=cv2.LINE_AA)
         return frame
-=======
-import os, cv2
-import face_recognition
-import numpy as np
-import time
-class FaceRecognize: # This class contains all recognition algorithms encapsulated in functions
-    def __init__(self, modelName): # Constructor / Initializer
-        self.__modelName = modelName
-        if self.__modelName == "svm":
-            self.__face_database = {
-                'face_name' : [],
-                'face_encodings': []
-            }
-            self.__processExistingFaceDatabase( )
-            self.__colors = [ tuple(255 * np.random.rand(3)) for _ in range(10) ]
-
 
     # This function generated landmarks for existing faces from face_database
     def __processExistingFaceDatabase( self ):
@@ -107,9 +103,3 @@ class FaceRecognize: # This class contains all recognition algorithms encapsulat
                 frame, name, tl, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 2) )
 
         return frame
-
-    def recognize( self, frame, prectictedFaceLocations ): # This function reads the command-line arguments and decides which algorithm to use
-        if self.__modelName == "svm":
-            frame = self.__recognizeWithSVM( frame, prectictedFaceLocations )
-            return frame
->>>>>>> Yolov2
