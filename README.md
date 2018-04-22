@@ -18,4 +18,7 @@ python3 Facethon.py [url] [frameWidth] yolo2 [cfg] [weights] [gpu]
 If you are using Python 3 virtual environment, you can type "python" instead of "python3"
 
 If you want to use the default webcam, just type "webcam" as the argument for [url]
+<<<<<<< HEAD
+=======
 
+>>>>>>> b5d60d21c630c6114b1ae6c4e8f909c8b8def9f3

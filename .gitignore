@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Yolo unnecessary files.
+*.weights
+*.meta
+Yolov2/bin/*
+Yolov2/ckpt/*

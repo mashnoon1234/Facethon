@@ -1,0 +1,53 @@
+{
+
+	"Project_name" : "Facethon",
+	
+	"Version"	   : "v1.0",
+	
+	"Supervisor"   : "Mirza Mohammad Lutfe Elahi",
+	
+	"Authors"	   : [
+		"Mashnoon Islam",
+		"Kalyan Roy",
+		"Redwanul Karim"
+	],
+
+	
+	"Video" : {
+		"frame_width" : "800",
+		"input"       : "webcam",
+		"url"		  : ""
+	},
+
+	"FaceDatabase" : {
+		"path" 	   	  : "face_database"
+	},
+
+	"Detection" : {
+		
+		"__algo_list" : ["haar", "lbp", "yolo2"],
+		
+		"Algorithm"   : "yolo2",
+		
+		"haar"        : {
+			"trained_file_path" : "FILE_PATH"
+		},
+		
+		"lbp"         : {
+			"trained_file_path" : "FILE_PATH"
+		},
+
+		"yolo2"       : {
+			"model_path" 		  : "/home/kalyan/Project/Facethon/Yolov2/cfg/yolo-face.cfg",
+			"trained_weight_path" : "/home/kalyan/Project/Facethon/Yolov2/bin/yolo-face.weights",
+			"gpu" 				  : "1.0"	
+		}
+	},
+
+	"Recognition" : {
+		
+		"__algo_list" : [ "dlib-svm", "fisher", "lbph", "eigan" ],
+		
+		"Algorithm"   : "dlib-svm"
+	}
+}
