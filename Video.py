@@ -33,14 +33,10 @@ class Video:
         return frame
     
     def processFrame(self, frame): # Does resizing, grayscale conversion and more
-<<<<<<< HEAD
         frame = self.__transferFrameGPU(frame)
         frame = self.__resizeFrame(frame)
-=======
         frame = cv2.UMat(frame)
         frame = cv2.resize(frame, (self.__frameWidth, self.__frameHeight))
-        frame = frame[:, :, ::-1 ]  # converting BRG to RGB
->>>>>>> Yolov2
         return frame
 
     def startTimer(self):
