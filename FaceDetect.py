@@ -62,5 +62,4 @@ class FaceDetect: # This class contains all detection algorithms encapsulated in
     def __detectYolo2(self, frame): # Yolo2 Face Detection
         result          = self.__tfnet.return_predict( frame )
         face_locations  = self.__predicted_face_locations( result )
-        frame           = self.__faceRecognize.recognize( frame, face_locations )
-        return frame
+        return frame, face_locations
